@@ -1,17 +1,26 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const cookieSession = require('cookie-session');
+const authRouter = require('./auth/auth.routes');
 dotenv.config();
 
-var corsOptions = {
-    origin: 'http://localhost:4000'
-}
+const uri = "mongodb+srv://speer:" + process.env.MONGODB_PASSWORD + "@cluster0.qlrwiez.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+    
+});
 
 const app = express();
 
+var corsOptions = {
+  origin: 'http://localhost:4000'
+}
+app.use(morgan('dev'));
 app.use(cors(corsOptions));
 // parse requests of content-type: application/json
 app.use(express.json());
@@ -30,10 +39,9 @@ app.get('/', (req, res) => {
     res.send("<h1>Hello world !</h1>")
 })
 
+/*
 // connecting to mongodb database
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://speer:" + process.env.MONGODB_PASSWORD + "@cluster0.qlrwiez.mongodb.net/?retryWrites=true&w=majority";
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -56,7 +64,9 @@ async function run() {
   }
 }
 run().catch(console.dir);
+*/
 
+app.use('/api/auth', authRouter);
 // listen to server
 app.listen(process.env.PORT, () => {
     console.log(`Server listening on Port ${process.env.PORT}`);
