@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const cookieSession = require('cookie-session');
 const authRouter = require('./auth/auth.routes');
+const notesRouter = require('./notes/notes.routes');
 dotenv.config();
 
 const uri = "mongodb+srv://speer:" + process.env.MONGODB_PASSWORD + "@cluster0.qlrwiez.mongodb.net/?retryWrites=true&w=majority";
@@ -65,7 +66,7 @@ async function run() {
 }
 run().catch(console.dir);
 */
-
+app.use('/api/notes', notesRouter);
 app.use('/api/auth', authRouter);
 // listen to server
 app.listen(process.env.PORT, () => {
