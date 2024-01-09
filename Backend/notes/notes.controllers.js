@@ -23,8 +23,21 @@ var getNotes = (req, res, next) => {
 
 var addNotes = (req, res, next) => {
     const newNote = new Notes({
-        
-    })
+        userId: req.user.id,
+        title: req.body.title,
+        content: req.body.content,
+    });
+    newNote.save()
+        .then(result => {
+            res.status(201).json({
+                message: 'Note created successfully'
+            })
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            })
+        })
 }
 
 var deleteNote = (req, res, next) => {
@@ -32,6 +45,9 @@ var deleteNote = (req, res, next) => {
 }
 
 var updateNote = (req, res, next) => {
+    Notes.find({_id: req.body._id})
+        .exec()
+        .then()
     res.status(201).json({
         'message': 'Note updated !'
     })
