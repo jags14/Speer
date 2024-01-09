@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../users/models/user.models');
 const config = require('../config/auth.config');
 
-verifyToken = (req, res, next) => {
+module.exports = (req, res, next) => {
     const token = req.session.token;
 
     if(!token){
@@ -17,14 +17,9 @@ verifyToken = (req, res, next) => {
                 message: err
             });
         } else {
-            req.userId = decoded.id;
+            req.userData = decoded.id;
             console.log(decoded.id);
             next();
         }
     });
 }
-
-const authJWT = {
-    verifyToken
-};
-module.exports = authJWT;
