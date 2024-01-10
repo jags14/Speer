@@ -3,8 +3,7 @@ const User = require('../users/models/user.models');
 const config = require('../config/auth.config');
 
 module.exports = (req, res, next) => {
-    const token = req.header('Authorization');
-    
+    const token = req.headers.authorization.split(' ')[1];
     if(!token){
         return res.status(401).send({
             message: "Unauthorized"
@@ -12,7 +11,7 @@ module.exports = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, config.secret);
-        req.user = decoded.user;
+        req.userId = decoded.userId;
         next();
     } catch (error) {
         res.status(401).json({message: 'Token is not Valid'})
