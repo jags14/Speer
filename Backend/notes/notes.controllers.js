@@ -23,7 +23,7 @@ var getNotes = (req, res, next) => {
 
 var addNotes = (req, res, next) => {
     const newNote = new Notes({
-        userId: req.user.id,
+        
         title: req.body.title,
         content: req.body.content,
     });

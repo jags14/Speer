@@ -3,7 +3,7 @@ const router = express.Router();
 const notesController = require('./notes.controllers');
 const authUser = require('../middlewares/authJwt');
 
-router.get('/',authUser, notesController.getNotes);
+router.get('/', notesController.getNotes);
 router.post('/', authUser, notesController.addNotes);
 router.delete('/:id', authUser, notesController.deleteNote);
 router.put('/:id', authUser, notesController.updateNote);
