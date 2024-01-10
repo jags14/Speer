@@ -91,7 +91,7 @@ var signIn = (req, res, next) => {
                 }
                 if(result){
                     const token = jwt.sign({
-                        user: {id: result._id}
+                        userId: user[0].id
                     },
                     config.secret, {
                         expiresIn: "1h"
