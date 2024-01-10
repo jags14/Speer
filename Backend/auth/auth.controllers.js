@@ -73,7 +73,7 @@ var signUp = async (req, res, next) => {
 }
 
 var signIn = (req, res, next) => {
-    console.log('inside signin controller');
+    // console.log('inside signin controller');
     User.find({email: req.body.email})
         .exec()
         .then(user => {
@@ -91,7 +91,7 @@ var signIn = (req, res, next) => {
                 }
                 if(result){
                     const token = jwt.sign({
-                        email: user[0].email
+                        user: {id: result._id}
                     },
                     config.secret, {
                         expiresIn: "1h"

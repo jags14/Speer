@@ -23,7 +23,7 @@ var getNotes = (req, res, next) => {
 
 var addNotes = (req, res, next) => {
     const newNote = new Notes({
-        
+        userId: req.user.id,
         title: req.body.title,
         content: req.body.content,
     });
@@ -41,6 +41,11 @@ var addNotes = (req, res, next) => {
 }
 
 var deleteNote = (req, res, next) => {
+    Notes.findById({notesId: req.params.id})
+        .exec()
+        .then(result => {
+
+        })
     res.status(204);
 }
 
