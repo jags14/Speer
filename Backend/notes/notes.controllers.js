@@ -87,8 +87,16 @@ var updateNote = async (req, res) => {
     }
 }
 
+var searchNoteByKeywords = async (req, res) => {
+    const filters = req.query;
+    const notes = await Notes.find({userId: req.body.userId});
+    const filteredNotes = notes.notes.filter()
+}
+
 var shareNote = (req, res, next) => {
-    res.status(200).json({})
+    res.status(200).json({
+
+    })
 }
 
 module.exports = {
