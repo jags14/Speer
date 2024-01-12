@@ -89,8 +89,17 @@ var updateNote = async (req, res) => {
 
 var searchNoteByKeywords = async (req, res) => {
     const filters = req.query;
-    const notes = await Notes.find({userId: req.body.userId});
-    const filteredNotes = notes.notes.filter()
+    // console.log(filters);
+    const notes = await Notes.findById({userId: req.body.userId});
+    const filteredNotes = notes.notes.filter(note => {
+        let isValid = true;
+        for(key in filters){
+            console.log(key, notes[key], filters[key]);
+            isValid = isValid && note[key] == filters[key]
+        }
+        return isValid;
+    });
+    res.status(200).send(filteredNotes);
 }
 
 var shareNote = (req, res, next) => {
@@ -105,5 +114,6 @@ module.exports = {
     addNotes,
     deleteNote,
     updateNote,
+    searchNoteByKeywords,
     shareNote
 }
