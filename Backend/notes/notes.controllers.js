@@ -21,7 +21,7 @@ var getNotes = (req, res, next) => {
         })
 }
 var getNoteById = async(req, res) => {
-    const note = await Notes.findById({id: req.body._id})
+    const note = await Notes.findById({_id: req.params.id});
     if(!note){
         res.status(404).json({
             message: "Note by given ID doesn't exist"
@@ -72,15 +72,21 @@ var deleteNote = async (req, res) => {
 }
 
 var updateNote = async (req, res) => {
+    console.log("inside update notes controller");
+    const noteId = req.params.id;
+    const userId = req.user.id
     try {
-        await Notes.findByIdAndUpdate({
-            id: req.body._id,
-            userId: req.body.userId,
-            title: req.body.title,
-            content: req.body.content
-        });
-        res.status(204).json({
-            message: 'resource updated'
+        const note = await Notes.findOne({_id: noteId, user: userId});
+        console.log("note: ",note);
+        if (!note) {
+            return res.status(404).json({ message: 'Note not found or you do not have permission to update it' });
+        }
+        note.title = req.body.title || note.title;
+        note.content = req.body.content || note.content;
+        await note.save();
+        res.status(200).json({
+            message: "Note updated",
+            updatedNote: note
         });
     } catch (error) {
         res.status(500).send(error);
